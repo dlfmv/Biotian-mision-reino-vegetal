@@ -1,8 +1,5 @@
 # Biotian-mision-reino-vegetal
 Recurso e-learning interactivo sobre clasificación y reproducción vegetal, desarrollado con HTML, CSS y JavaScript.
-# Misión Reino Vegetal
-
-Aplicación web educativa e interactiva diseñada para reforzar la clasificación y la reproducción de las plantas mediante una experiencia gamificada.
 
 ## Descripción
 
