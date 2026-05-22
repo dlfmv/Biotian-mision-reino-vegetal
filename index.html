@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>BioTian</title>
+    <link rel="stylesheet" href="./style.css">
+
+  </head>
+    
+  <body>
+  <header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-badge">🌿</div>
+      <div class="brand-text">
+        <strong>Campus Botánico</strong>
+        <span>Recurso e-learning interactivo · clasificación y reproducción vegetal</span>
+      </div>
+    </div>
+
+    <div class="topbar-status">
+      <div class="status-pill">Evaluación inicial + final</div>
+      <div class="status-pill">Misiones desbloqueables</div>
+      <div class="status-pill">Informe automático</div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section class="card hero" id="homeScreen">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="hero-kicker">Campus académico botánico</span>
+        <h1>Misión Reino Vegetal</h1>
+        <p>
+          Recurso didáctico interactivo para reforzar la clasificación y la reproducción de las plantas.
+          Combina evaluación diagnóstica, misiones guiadas, personajes desbloqueables y verificación final
+          con informe automático de aprendizaje.
+        </p>
+
+        <div class="campus-strip">
+          <div class="campus-item">
+            <span>Ruta</span>
+            <strong>Diagnóstico inicial, mapa de misiones y evaluación final.</strong>
+          </div>
+          <div class="campus-item">
+            <span>Aprendizaje</span>
+            <strong>Feedback inmediato, progresión visible y repaso activo del contenido.</strong>
+          </div>
+          <div class="campus-item">
+            <span>Propósito</span>
+            <strong>Transformar contenido curricular en experiencia digital estructurada.</strong>
+          </div>
+        </div>
+
+        <label><strong>Nombre del estudiante</strong></label>
+        <input id="studentName" class="input" type="text" placeholder="Escribe aquí el nombre">
+
+        <div class="row" style="margin-top:16px;">
+          <button class="btn blue" onclick="startPretest()">1. Test inicial</button>
+          <button class="btn" onclick="openMissionMap()">2. Empezar misiones</button>
+          <button class="btn gold" onclick="startPosttest()">3. Test final</button>
+        </div>
+
+        <div class="admin-panel">
+          <label><strong>Clave de administrador</strong></label>
+          <input id="adminKey" class="input" type="password" placeholder="Introduce la clave">
+          <div class="row" style="margin-top:12px;">
+            <button class="btn red" onclick="adminUnlockAll()">Admin Mode</button>
+            <button class="btn gray" onclick="adminResetGame()">Reset juego</button>
+          </div>
+          <p class="small" style="margin-top:10px;">Solo para pruebas técnicas.</p>
+        </div>
+
+        <p class="small" style="margin-top:14px;">
+          Orden recomendado: test inicial → misiones → test final.
+        </p>
+      </div>
+
+      <aside class="hero-panel">
+        <h3>Vista general del recurso</h3>
+        <div class="hero-panel-list">
+          <div class="hero-panel-item">
+            <span>Estructura</span>
+            <strong>Inicio, mapa de progreso, actividades y resultado final.</strong>
+          </div>
+          <div class="hero-panel-item">
+            <span>Metodología</span>
+            <strong>Secuencia gamificada con foco en comprensión, repaso y retención.</strong>
+          </div>
+          <div class="hero-panel-item">
+            <span>Valor didáctico</span>
+            <strong>Permite entrenar contenidos curriculares con indicadores de progreso y desempeño.</strong>
+          </div>
+          <div class="hero-panel-item">
+            <span>Presentación profesional</span>
+            <strong>Interfaz orientada a portfolio, candidatura y demostración de diseño instruccional.</strong>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="card hidden" id="missionMapScreen">
+    <div class="battle-banner">
+      <div>
+        <h2>Mapa de misiones</h2>
+        <p class="small">Completa los niveles para desbloquear personajes y dominar el tema.</p>
+      </div>
+      <div class="stats">
+        <div class="stat">Puntos: <span id="globalPoints">0</span></div>
+        <div class="stat">Personajes: <span id="globalCharacters">0</span>/5</div>
+        <div class="stat">Misiones superadas: <span id="globalCompleted">0</span>/5</div>
+      </div>
+    </div>
+
+    <div class="unlock-grid" id="characterGrid"></div>
+    <div class="map" id="missionMap"></div>
+
+    <div class="row" style="margin-top:16px;">
+      <button class="btn gray" onclick="goHome()">Volver al inicio</button>
+    </div>
+  </section>
+
+  <section class="card hidden" id="quizScreen">
+    <div class="battle-banner">
+      <div>
+        <h2 id="quizTitle">Cuestionario</h2>
+        <p class="small" id="quizSubtitle"></p>
+      </div>
+      <div class="stats">
+        <div class="stat">Pregunta <span id="qIndex">1</span>/<span id="qTotal">1</span></div>
+        <div class="stat">Aciertos: <span id="score">0</span></div>
+      </div>
+    </div>
+
+    <div class="progress"><div class="bar" id="quizBar"></div></div>
+    <div class="question" id="questionText"></div>
+    <div class="options" id="optionsBox"></div>
+    <div class="feedback hidden" id="feedbackBox"></div>
+
+    <div class="row" style="margin-top:16px;">
+      <button class="btn gray hidden" id="nextBtn" onclick="nextQuestion()">Siguiente</button>
+      <button class="btn red" onclick="goHome()">Salir</button>
+    </div>
+  </section>
+
+  <section class="card hidden" id="matchingScreen">
+    <h2 id="matchingTitle">Misión de emparejar</h2>
+    <p class="small" id="matchingSubtitle"></p>
+
+    <div class="progress"><div class="bar" id="matchBar"></div></div>
+
+    <div class="battle-box">
+      <p><strong>Instrucción:</strong> pulsa un término de la izquierda y luego su definición correcta a la derecha.</p>
+      <p>Parejas correctas: <strong><span id="matchCount">0</span></strong>/<span id="matchTotal">0</span></p>
+
+      <div class="match-grid">
+        <div class="match-col" id="termsCol"></div>
+        <div class="match-col" id="defsCol"></div>
+      </div>
+    </div>
+
+    <div class="feedback hidden" id="matchingFeedback"></div>
+
+    <div class="row" style="margin-top:16px;">
+      <button class="btn gray hidden" id="matchingNextBtn" onclick="finishCurrentLevel()">Continuar</button>
+      <button class="btn red" onclick="openMissionMap()">Volver al mapa</button>
+    </div>
+  </section>
+
+  <section class="card hidden" id="diagramScreen">
+    <h2 id="diagramTitle">Identificar partes</h2>
+    <p class="small" id="diagramSubtitle"></p>
+
+    <div class="diagram-box">
+      <canvas id="diagramCanvas" class="diagram" width="760" height="430"></canvas>
+      <div class="question" id="diagramQuestion"></div>
+      <div class="options" id="diagramOptions"></div>
+    </div>
+
+    <div class="feedback hidden" id="diagramFeedback"></div>
+
+    <div class="row" style="margin-top:16px;">
+      <button class="btn gray hidden" id="diagramNextBtn" onclick="nextDiagramQuestion()">Siguiente</button>
+      <button class="btn red" onclick="openMissionMap()">Volver al mapa</button>
+    </div>
+  </section>
+
+  <section class="card hidden" id="resultScreen">
+    <h2 id="resultTitle">Resultado</h2>
+    <div class="score-big" id="finalScore">0/10</div>
+    <p id="finalGradeText"></p>
+    <div class="report" id="reportPreview"></div>
+
+    <div class="row" style="margin-top:16px;">
+      <button class="btn" onclick="downloadReport()">Descargar informe</button>
+      <button class="btn blue" onclick="goHome()">Volver al inicio</button>
+    </div>
+  </section>
+
+</div>
+    <script  src="./script.js"></script>
+
+  </body>
+  
+</html>
